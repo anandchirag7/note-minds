@@ -153,27 +153,23 @@ const App: React.FC = () => {
             
             <div className="flex-1 flex flex-col relative bg-white overflow-hidden">
                 {activeView === 'chat' ? (
-                  <>
-                    {/* Top "Dashboard" area with Audio Overview if sources exist */}
-                    {state.sources.length > 0 && (
-                        <div className="px-8 pt-6 pb-2">
-                            <AudioPlayer 
-                                audioUrl={state.audioState.audioUrl}
-                                isLoading={state.audioState.isLoading}
-                                transcript={state.audioState.transcript}
-                                onGenerate={handleGenerateAudio}
-                                hasSources={state.sources.length > 0}
-                            />
-                        </div>
-                    )}
-
                     <ChatArea 
                         messages={state.messages}
                         sources={state.sources}
                         onSendMessage={handleSendMessage}
                         isLoading={state.isChatLoading}
+                        headerComponent={
+                            state.sources.length > 0 ? (
+                                <AudioPlayer 
+                                    audioUrl={state.audioState.audioUrl}
+                                    isLoading={state.audioState.isLoading}
+                                    transcript={state.audioState.transcript}
+                                    onGenerate={handleGenerateAudio}
+                                    hasSources={state.sources.length > 0}
+                                />
+                            ) : undefined
+                        }
                     />
-                  </>
                 ) : (
                   <MindMapView sources={state.sources} />
                 )}

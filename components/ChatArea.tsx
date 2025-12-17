@@ -8,9 +8,16 @@ interface ChatAreaProps {
   sources: Source[];
   onSendMessage: (text: string) => void;
   isLoading: boolean;
+  headerComponent?: React.ReactNode;
 }
 
-export const ChatArea: React.FC<ChatAreaProps> = ({ messages, sources, onSendMessage, isLoading }) => {
+export const ChatArea: React.FC<ChatAreaProps> = ({ 
+  messages, 
+  sources, 
+  onSendMessage, 
+  isLoading,
+  headerComponent
+}) => {
   const [input, setInput] = React.useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -42,17 +49,24 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ messages, sources, onSendMes
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-white relative">
+    <div className="flex-1 flex flex-col bg-white relative min-h-0">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+        
+        {headerComponent && (
+            <div className="mb-2">
+                {headerComponent}
+            </div>
+        )}
+
         {messages.length === 0 && (
-            <div className="mt-12 text-center space-y-4">
+            <div className="mt-4 text-center space-y-4">
                 <div className="inline-block p-3 bg-indigo-50 text-primary rounded-2xl mb-2">
                     <Sparkles size={24} />
                 </div>
                 <h2 className="text-2xl font-semibold text-slate-800">What would you like to know?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                    {['Summarize the key points', 'What are the main arguments?', 'List any dates mentions', 'Explain the conclusion'].map((suggestion) => (
+                    {['Summarize the key points', 'What are the main arguments?', 'List any dates mentioned', 'Explain the conclusion'].map((suggestion) => (
                         <button 
                             key={suggestion}
                             onClick={() => onSendMessage(suggestion)}
@@ -109,7 +123,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ messages, sources, onSendMes
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-white border-t border-slate-100">
+      <div className="p-4 bg-white border-t border-slate-100 z-10">
         <div className="max-w-3xl mx-auto relative">
           <form onSubmit={handleSubmit} className="relative">
             <input

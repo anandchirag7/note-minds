@@ -1,0 +1,5 @@
+{
+  "name": "NoteMinds",
+  "description": "A powerful research assistant inspired by NotebookLM. Upload documents, chat with your sources, and generate audio podcast overviews powered by Gemini 2.5.",
+  "requestFramePermissions": []
+}

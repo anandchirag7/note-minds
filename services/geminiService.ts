@@ -32,6 +32,20 @@ export const streamChatResponse = async (
   Answer the user's questions strictly based on the provided sources. 
   If the answer is not in the sources, say so. 
   
+  If the user asks for a visualization, chart, or graph, generate a JSON object wrapped in a code block with the language identifier "chart".
+  The JSON schema is:
+  {
+    "type": "bar" | "line" | "area" | "pie",
+    "title": "Chart Title",
+    "xAxisLabel": "Label for X Axis",
+    "yAxisLabel": "Label for Y Axis",
+    "data": [
+      { "name": "Category 1", "value": 100 },
+      { "name": "Category 2", "value": 200 }
+    ]
+  }
+  Ensure the data keys are exactly "name" and "value".
+  
   Sources:
   ${context}`;
 

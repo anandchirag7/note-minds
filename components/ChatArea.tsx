@@ -3,6 +3,7 @@ import { Send, Sparkles, User, Bot, AlertCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ChatMessage, Source } from '../types';
+import { ChartRenderer } from './ChartRenderer';
 
 interface ChatAreaProps {
   messages: ChatMessage[];
@@ -99,6 +100,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                        <ReactMarkdown 
                             remarkPlugins={[remarkGfm]}
                             components={{
+                                code({node, inline, className, children, ...props}: any) {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    const isChart = !inline && match && (match[1] === 'chart' || match[1] === 'json-chart');
+                                    
+                                    if (isChart) {
+                                      return <ChartRenderer code={String(children).replace(/\n$/, '')} />;
+                                    }
+                                    return <code className={className} {...props}>{children}</code>;
+                                },
                                 table: ({node, ...props}) => (
                                     <div className="overflow-x-auto my-4 rounded-lg border border-slate-200">
                                         <table className="min-w-full divide-y divide-slate-200" {...props} />

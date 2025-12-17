@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Send, Sparkles, User, Bot, AlertCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ChatMessage, Source } from '../types';
 
 interface ChatAreaProps {
@@ -95,7 +96,33 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                      </div>
                 ) : (
                     <div className={`prose prose-sm prose-slate max-w-none ${msg.role === 'user' ? 'text-right' : ''}`}>
-                       <ReactMarkdown>{msg.text}</ReactMarkdown>
+                       <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                table: ({node, ...props}) => (
+                                    <div className="overflow-x-auto my-4 rounded-lg border border-slate-200">
+                                        <table className="min-w-full divide-y divide-slate-200" {...props} />
+                                    </div>
+                                ),
+                                thead: ({node, ...props}) => (
+                                    <thead className="bg-slate-50" {...props} />
+                                ),
+                                th: ({node, ...props}) => (
+                                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" {...props} />
+                                ),
+                                tbody: ({node, ...props}) => (
+                                    <tbody className="bg-white divide-y divide-slate-100" {...props} />
+                                ),
+                                tr: ({node, ...props}) => (
+                                    <tr className="hover:bg-slate-50/50 transition-colors" {...props} />
+                                ),
+                                td: ({node, ...props}) => (
+                                    <td className="px-4 py-3 text-sm text-slate-600 leading-relaxed border-t border-slate-100" {...props} />
+                                )
+                            }}
+                       >
+                           {msg.text}
+                       </ReactMarkdown>
                     </div>
                 )}
              </div>
